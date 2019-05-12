@@ -35,6 +35,8 @@ registerSimpleRouter();
 
 registerExtendRouter();
 
+registerInterceptorRouter();
+
 function registerBaseRouter() {
   router.get('/base/get', function (req, res) {
     res.json(req.query);
@@ -125,6 +127,12 @@ function registerExtendRouter() {
         age: 28
       }
     })
+  })
+}
+
+function registerInterceptorRouter() {
+  router.get('/interceptor/get', function(req, res) {
+    res.send('hello')
   })
 }
 
