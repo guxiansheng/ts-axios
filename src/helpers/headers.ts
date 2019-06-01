@@ -1,4 +1,5 @@
-import { isPlainObject } from './util';
+import { isPlainObject, deepMerge } from './util';
+import { Methed } from '../types/index';
 
 function normalizeHeaderName(headers: any, normalizedName: string): void {
   if (!headers) {
@@ -43,4 +44,20 @@ export function parseHeaders(headers: string): any {
   })
 
   return parsed;
+}
+
+export function flattenHeaders(headers: any, methed: Methed): any {
+  if (!headers) {
+    return headers;
+  }
+
+  headers = deepMerge(headers.common, headers[methed], headers);
+
+  const methedsToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common'];
+
+  methedsToDelete.forEach(methed => {
+    delete headers[methed];
+  })
+
+  return headers;
 }
