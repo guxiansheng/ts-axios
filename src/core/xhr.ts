@@ -1,10 +1,23 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types';
 import { parseHeaders } from '../helpers/headers';
 import { createError } from "../helpers/error";
+import { isURLSameOrigin } from '../helpers/url';
+import cookie from '../helpers/cookie';
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { url, methed = 'get', data = null, headers, responseType, timeout, cancelToken } = config;
+    const { 
+      url,
+      methed = 'get', 
+      data = null, 
+      headers, 
+      responseType, 
+      timeout, 
+      cancelToken, 
+      withCredentials,
+      xsrfCookieName,
+      xsrfHeaderName
+    } = config;
 
     const request = new XMLHttpRequest();
 
@@ -14,6 +27,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     if (timeout) {
       request.timeout = timeout;
+    }
+
+    if (withCredentials) {
+      request.withCredentials = withCredentials;
     }
 
     request.open(methed.toLocaleUpperCase(), url!, true);
@@ -42,6 +59,13 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     request.onerror = function handleError() {
       reject(createError('Network Error', config, null, request));
+    }
+
+    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName ) {
+      const xsrfValue = cookie.read(xsrfCookieName);
+      if (xsrfValue && xsrfHeaderName) {
+        headers[xsrfHeaderName] = xsrfValue;
+      }
     }
 
     request.ontimeout = function handleTimeout() {

@@ -1,13 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const WebpackConfig = require('./webpack.config');
+const path = require('path');
+
+require('./server2');
 
 const app = express();
 const router = express.Router();
 const compiler = webpack(WebpackConfig);
+
+
 
 app.use(webpackDevMiddleware(compiler, {
   publicPath: '/__build__/',
@@ -19,9 +25,15 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler));
 
-app.use(express.static(__dirname));
+app.use(express.static(__dirname, {
+  setHeaders(res) {
+    res.cookie('XSRF-TOKEN-D', '1234abc');
+  }
+}));
 
 app.use(bodyParser.json())
+
+app.use(cookieParser())
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -38,6 +50,10 @@ registerExtendRouter();
 registerInterceptorRouter();
 
 registerConfigRouter();
+
+registerCancelRouter();
+
+registerMoreRouter();
 
 function registerBaseRouter() {
   router.get('/base/get', function (req, res) {
@@ -141,6 +157,26 @@ function registerInterceptorRouter() {
 function registerConfigRouter() {
   router.post('/config/post', function(req, res) {
     res.json(req.body);
+  })
+}
+
+function registerCancelRouter() {
+  router.get('/cancel/get', function(req, res) {
+    setTimeout(() => {
+      res.json('hello');
+    }, 1000);
+  });
+
+  router.post('/cancel/post', function(req, res) {
+    setTimeout(() => {
+      res.json(req.body);
+    }, 1000);
+  });
+}
+
+function registerMoreRouter() {
+  router.get('/more/get', function(req, res) {
+    res.json(req.cookies);
   })
 }
 
