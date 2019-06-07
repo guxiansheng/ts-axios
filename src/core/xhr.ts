@@ -19,7 +19,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfCookieName,
       xsrfHeaderName,
       onDownloadprogress,
-      onUploadProgress
+      onUploadProgress,
+      auth
     } = config;
 
     // 创建对象
@@ -103,6 +104,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
           headers[xsrfHeaderName] = xsrfValue;
         }
       }
+
+      if (auth) {
+        headers['Authorization'] = 'Basic '+ btoa(auth.username + ':' + auth.password);
+      } 
 
       Object.keys(headers).forEach((name) => {
         if (data === null && name.toLowerCase() === 'content-type') {
