@@ -121,34 +121,44 @@ import qs from 'qs';
 
 // 自定义参数序列化
 
-axios.get('/more/get', {
-    params: new URLSearchParams('a=b&c=d')
-}).then((res) => {
-    console.log(res)
-})
+// axios.get('/more/get', {
+//     params: new URLSearchParams('a=b&c=d')
+// }).then((res) => {
+//     console.log(res)
+// })
 
-axios.get('/more/get', {
-    params: {
-        a: 1,
-        b: 2,
-        c: ['a', 'b', 'c']
-    }
-}).then(res => {
-    console.log(res)
-})
+// axios.get('/more/get', {
+//     params: {
+//         a: 1,
+//         b: 2,
+//         c: ['a', 'b', 'c']
+//     }
+// }).then(res => {
+//     console.log(res)
+// })
 
-const instance = axios.create({
-    paramsSerializer(params) {
-        return qs.stringify(params, { arrayFormat: 'brackets' })
-    }
-})
+// const instance = axios.create({
+//     paramsSerializer(params) {
+//         return qs.stringify(params, { arrayFormat: 'brackets' })
+//     }
+// })
 
-instance.get('/more/get', {
-    params: {
-        a: 1,
-        b: 2,
-        c: ['a', 'b', 'c']
-    }
-}).then(res => {
-    console.log(res)
-})
+// instance.get('/more/get', {
+//     params: {
+//         a: 1,
+//         b: 2,
+//         c: ['a', 'b', 'c']
+//     }
+// }).then(res => {
+//     console.log(res)
+// })
+
+// 自定义baseURL
+
+// const instance = axios.create({
+//     baseURL: 'https://img.mukewang.com/'
+// })
+
+// instance.get('5cc01a7b0001a33718720632.jpg')
+
+// instance.get('https://img.mukewang.com/szimg/5becd5ad0001b89306000338-360-202.jpg')
