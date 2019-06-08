@@ -20,7 +20,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfHeaderName,
       onDownloadprogress,
       onUploadProgress,
-      auth
+      auth,
+      validateStatus
     } = config;
 
     // 创建对象
@@ -129,7 +130,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     // 处理返回结果
     function handleResponse(response: AxiosResponse): void {
-      if (response.status >= 200 && response.status < 300) {
+      if (!validateStatus || validateStatus(response.status)) {
         resolve(response);
       } else {
         reject(createError(`Request failed with status code${response.status}`, config, null, request, response));

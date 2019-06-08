@@ -87,13 +87,32 @@ import NProgress from 'nprogress';
 
 //  http授权
 
-axios.post('/more/post', {
-    a: 1
-}, {
-    auth: {
-        username: 'Han',
-        password: '123456'
+// axios.post('/more/post', {
+//     a: 1
+// }, {
+//     auth: {
+//         username: 'Han',
+//         password: '123456'
+//     }
+// }).then(res => {
+//     console.log(res);
+// });
+
+
+// 自定义合法状态码
+
+axios.get('/more/304').then(res => {
+    console.log(res);
+}).catch((e: AxiosError) => {
+    console.log(e.message);
+})
+
+axios.get('/more/304', {
+    validateStatus(status) {
+        return status >= 200 && status < 400
     }
 }).then(res => {
-    console.log(res);
-});
+    console.log(res)
+}).catch((e: AxiosError) => {
+    console.log(e.message);
+})
