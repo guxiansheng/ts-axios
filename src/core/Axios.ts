@@ -1,12 +1,12 @@
-import { 
-    AxiosResponse, 
+import {
+    AxiosResponse,
     AxiosRequestConfig,
-    AxiosPromise, 
-    Methed, 
+    AxiosPromise,
+    Methed,
     RejectedFn,
     ResolvedFn
 } from '../types';
-import  dispatchRequest, { transformURL }  from './dispatchRequest';
+import dispatchRequest, { transformURL } from './dispatchRequest';
 import InterceptorManager from './interceptorManager'
 import mergeConfig from './mergeConfig';
 
@@ -31,7 +31,7 @@ export default class Axios {
             response: new InterceptorManager<AxiosResponse>()
         }
     }
-    
+
     request(url: any, config?: any): AxiosPromise {
         if (typeof url === 'string') {
             if (!config) {
@@ -50,7 +50,7 @@ export default class Axios {
                 rejected: undefined
             }
         ]
-        
+
         this.interceptors.request.forEach(interceptor => {
             chain.unshift(interceptor)
         })
@@ -61,13 +61,13 @@ export default class Axios {
 
         let promise = Promise.resolve(config)
 
-        while(chain.length) {
+        while (chain.length) {
             const { resolved, rejected } = chain.shift()!
             promise = promise.then(resolved, rejected);
         }
 
         return promise;
-    } 
+    }
 
     get(url: string, config?: AxiosRequestConfig): AxiosPromise {
         return this._requestMethedWithoutData('get', url, config);
@@ -98,17 +98,17 @@ export default class Axios {
     }
 
     getUri(config?: AxiosRequestConfig): string {
-        config = mergeConfig(this.defaults, config);
+        config = mergeConfig(this.defaults, config)
         return transformURL(config)
     }
-    
+
 
     _requestMethedWithoutData(
         methed: Methed,
         url: String,
         config?: AxiosRequestConfig
     ): AxiosPromise {
-        return this.request(Object.assign(config||{}, {
+        return this.request(Object.assign(config || {}, {
             methed,
             url
         }))
@@ -120,7 +120,7 @@ export default class Axios {
         data?: any,
         config?: AxiosRequestConfig
     ): AxiosPromise {
-        return this.request(Object.assign(config||{}, {
+        return this.request(Object.assign(config || {}, {
             methed,
             url,
             data
