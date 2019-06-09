@@ -9,7 +9,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
     const { 
       url,
-      methed = 'get', 
+      method = 'get', 
       data = null, 
       headers, 
       responseType, 
@@ -28,7 +28,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     const request = new XMLHttpRequest();
 
     // 初始化
-    request.open(methed.toLocaleUpperCase(), url!, true);
+    request.open(method.toLocaleUpperCase(), url!, true);
 
     configureRequest()// 添加配置
 

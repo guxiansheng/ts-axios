@@ -1,4 +1,4 @@
-export type Methed = 
+export type Method = 
     | 'get' 
     | 'GET'
     | 'delete' 
@@ -16,7 +16,7 @@ export type Methed =
 
 export interface AxiosRequestConfig {
     url?: string,
-    methed?: Methed,
+    method?: Method,
     data?: any,
     params?: any,
     headers?: any,

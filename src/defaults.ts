@@ -3,7 +3,7 @@ import { transformRequest, transformResponse } from './helpers/data';
 import { processHeaders } from './helpers/headers';
 
 const defaults: AxiosRequestConfig = {
-    methed: 'get',
+    method: 'get',
     timeout: 0,
     headers: {
         common: {
@@ -33,16 +33,16 @@ const defaults: AxiosRequestConfig = {
     }
 }
 
-const methedsNoData = ['delete', 'get', 'head', 'options'];
+const methodsNoData = ['delete', 'get', 'head', 'options'];
 
-methedsNoData.forEach(methed => {
-    defaults.headers[methed] = {}
+methodsNoData.forEach(method => {
+    defaults.headers[method] = {}
 })
 
-const methedsWithData = ['post', 'put', 'patch'];
+const methodsWithData = ['post', 'put', 'patch'];
 
-methedsWithData.forEach(methed => {
-    defaults.headers[methed] = {
+methodsWithData.forEach(method => {
+    defaults.headers[method] = {
         'Content-Type': 'application/x-www-form-urlencoded'
     }
 })
